@@ -1,5 +1,101 @@
 package llrp
 
+/// Compliance requirement: Compliant Readers and Clients SHALL implement this parameter.
+func AccessSpecStopTrigger(AccessSpecStopTriggerType ,OperationCountValue uint) []interface{} {
+	return commonSpec(
+		P_AccessSpecStopTrigger,
+		[]interface{}{
+			uint8(AccessSpecStopTriggerType),
+			uint16(OperationCountValue),
+		},
+	)
+}
+/*
+*  This parameter defines the air protocol access-specific settings. It contains a TagSpec and
+an OpSpec Parameter. The TagSpec specifies the tag filters in terms of air protocol
+specific memory capabilities (e.g., memory banks, pointer and length). The OpSpec
+specifies all the details of the operations required for the air protocol specific access
+operation commands.
+* *Compliance requirement: Compliant Readers and Clients SHALL implement this parameter.
+* Notes  - TagSpecParameter is the air protocol specific tag spec parameter. For C1G2, it is C1G2TagSpec Parameter.
+*/
+//func AccessCommand(TagSpec,OpSpec []interface{}) []interface{} {
+func AccessCommand(params ...[]interface{}) []interface{} {
+	return commonSpec(
+		P_AccessCommand,
+		nil,
+		params...,
+	)
+}
+
+/* 
+*  This parameter describes the target tag population on which certain operations have to be performed. This Parameter is similar to the selection C1G2Filter Parameter described
+earlier. However, because these tags are stored in the Reader's memory and ternary comparisons are to be allowed for, each bit i in the target tag is represented using 2 bits - bit i in mask, and bit i in tag pattern. If bit i in the mask is zero, then bit i of the target tag is a don’t care (X); if bit i in the mask is one, then bit i of the target tag is bit i of the tag pattern. For example, “all tags” is specified using a mask length of zero.
+*/
+func C1G2TagSpec(params ...[]interface{}) []interface{} {
+	return commonSpec(
+		P_C1G2TagSpec,
+		nil,
+		params...,
+	)
+} 
+
+/*
+*
+* If Length is zero, this pattern will match all tags regardless of MB, pointer, mask and
+data.
+*/
+func C1G2TargetTag(MB, Pointer, MaskBitCount uint, TagMask []uint8,TagData []uint, Match int) []interface{} {
+	MB = MB  << 1
+	MB += MaskBitCount
+	MB = MB << 5
+	DataBitCount := len(TagMask)
+	return commonSpec(
+		P_C1G2TargetTag,
+		[]interface{}{
+			MB,
+			uint16(Pointer),
+			uint16(MaskBitCount),
+			TagMask,
+			uint16(DataBitCount),
+			TagData,
+		},
+	)
+}
+
+
+
+/* 
+* This parameter sets up the triggers for the Reader to send the access results to the Client. In addition, the Client can enable or disable reporting of ROSpec details in the access results.
+*/
+
+func AccessReportSpec(AccessReportTrigger uint) []interface{} {
+	return commonSpec(
+		P_AccessReportSpec,
+		nil,
+		[]interface{}{
+			uint8(AccessReportTrigger),
+		},
+	)
+}
+
+/*
+* This parameter carries information of the Reader access operation.
+*/
+func AccessSpec(AntennaID,ProtocolID, uint,CurrentState int,ROSpecID uint, params ...[]interface{}) []interface{} {
+	return commonSpec(
+		P_AccessSpecID,
+		[]interface{} {
+			uint16(AntennaID),
+			uint8(ProtocolID),
+			uint8(CurrentState),
+			uint32(ROSpecID),
+		},
+		params...,
+	)
+}
+
+
 /*
 This parameter carries the information of the Reader inventory and survey operation.
 */
@@ -237,7 +333,6 @@ func C1G2RFControl(ModeIndex, Tari int) []interface{} {
 
 /*
 This C1G2SingulationControl Parameter provides controls particular to the singulation process in the C1G2 air protocol. The singulation process is started using a Query command in the C1G2 protocol. The Query command describes the session number, tag state, the start Q value to use, and the RF link parameters. The RF link parameters are specified using the C1G2RFControl Parameter (see section 16.2.1.2.1.2). This Singulation Parameter specifies the session, tag state and description of the target singulation environment
------
 	Session: Integer. Session number to use for the inventory operation.
 	Possible Values: 0-3
 	Tag population: Unsigned Short Integer. An estimate of the tag population in view of the RF field of the antenna.

@@ -141,12 +141,3 @@ const (
 	C_AccessReportTrigger_EndOfAcessSpec
 )
 
-// This parameter sets up the triggers for the Reader to send the access results to the Client. In addition, the Client can enable or disable reporting of ROSpec details in the access results.
-func AccessReportSpec(AccessReportTrigger int) []interface{} {
-	return commonSpec(
-		P_AccessReportSpec,
-		[]interface{}{
-			uint8(AccessReportTrigger),
-		},
-	)
-}
