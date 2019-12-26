@@ -2,7 +2,7 @@
 
 # llrp
 Official golang implement Low Level Reader Protocol(LLRP)
-## Document and referent
+## Document and reference
 You can get there in this repo.
 ## How to run test
 ```   go run main.go ```
