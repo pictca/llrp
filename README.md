@@ -14,3 +14,8 @@ List of function I implement base on we used. So if you want to add more functio
  
 ## main developer
 Pichit Rintara (Thailand) - pictca@gmail.com
+
+## Issue & bug report
+Currently, I don't have physical reader. If you found some bug relate on function in this project.
+please attach snap tcp package file (use tool like [wireshark](https://www.wireshark.org/download.html))
+while running main demo.
