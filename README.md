@@ -22,4 +22,4 @@ List of function I implement base on we used. So if you want to add more functio
 ### 
  
 ## main developer
-Pichit Rintara (Thailand)
+Pichit Rintara (Thailand) - pictca@gmail.com
